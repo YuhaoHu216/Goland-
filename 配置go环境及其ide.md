@@ -370,3 +370,125 @@ a, b, c := 5, 7, "abc"
 _ 实际上是一个只写变量，你不能得到它的值。这样做是因为 Go 语言中你必须使用所有被声明的变量，但有时你并不需要使用从一个函数得到的所有返回值。
 
 并行赋值也被用于当一个函数返回多个返回值时，比如这里的 val 和错误 err 是通过调用 Func1 函数同时得到：val, err = Func1(var1)。
+
+# 6.Go常量
+
+量是一个简单值的标识符，在程序运行时，不会被修改的量。
+
+常量中的数据类型只可以是布尔型、数字型（整数型、浮点型和复数）和字符串型。
+
+用`const`关键字定义常量
+
+```go
+const identifier [type] = value
+```
+
+你可以省略类型说明符 [type]，因为编译器可以根据变量的值来推断其类型。
+
+多个相同类型的声明可以简写为：
+
+```go
+const c_name1, c_name2 = value1, value2
+```
+
+常量还可以用作枚举：
+
+```go
+const (
+    Unknown = 0
+    Female = 1
+    Male = 2
+)
+```
+
+常量可以用len(), cap(), unsafe.Sizeof()函数计算表达式的值。常量表达式中，函数必须是内置函数，否则编译不过：
+
+```go
+package main
+
+import "unsafe"
+const (
+    a = "abc"
+    b = len(a)
+    c = unsafe.Sizeof(a)
+)
+
+func main(){
+    println(a, b, c)
+}
+```
+
+## iota
+
+iota，特殊常量，可以认为是一个可以被编译器修改的常量。
+
+iota 在 const关键字出现时将被重置为 0(const 内部的第一行之前)，const 中每新增一行常量声明将使 iota 计数一次(iota 可理解为 const 语句块中的行索引)。
+
+iota 可以被用作枚举值：
+
+```go
+const (
+    a = iota
+    b = iota
+    c = iota
+)
+
+```
+
+第一个 iota 等于 0，每当 iota 在新的一行被使用时，它的值都会自动加 1；所以 a=0, b=1, c=2 可以简写为如下形式：
+
+```go
+const (
+    a = iota
+    b
+    c
+)
+
+```
+
+;一个用法
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    const (
+            a = iota   //0
+            b          //1
+            c          //2
+            d = "ha"   //独立值，iota += 1
+            e          //"ha"   iota += 1
+            f = 100    //iota +=1
+            g          //100  iota +=1
+            h = iota   //7,恢复计数
+            i          //8
+    )
+    fmt.Println(a,b,c,d,e,f,g,h,i)
+}
+```
+
+一个实例
+
+```go
+package main
+
+import "fmt"
+const (
+    i=1<<iota
+    j=3<<iota
+    k
+    l
+)
+
+func main() {
+    fmt.Println("i=",i)
+    fmt.Println("j=",j)
+    fmt.Println("k=",k)
+    fmt.Println("l=",l)
+}
+```
+
+# 7.Go运算符
+
