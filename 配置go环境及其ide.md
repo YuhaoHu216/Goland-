@@ -897,3 +897,84 @@ func main() {
 }
 ```
 
+# 18.方法
+
+```go
+type rect struct {
+	width, height int
+}
+
+// 这里的 area 方法有一个接收器类型 rect。
+func (r *rect) area() int {
+	return r.width * r.height
+}
+
+// 可以为值类型或者指针类型的接收器定义方法。这里是一个值类型接收器的例子。
+func (r rect) perim() int {
+	return 2*r.width + 2*r.height
+}
+func main() {
+	r := rect{width: 10, height: 5}
+
+	// 这里我们调用上面为结构体定义的两个方法。
+	fmt.Println("area: ", r.area())
+	fmt.Println("perim:", r.perim())
+
+	// Go 自动处理方法调用时的值和指针之间的转化
+	// 可以使用指针来调用方法来避免在方法调用时产生一个拷贝，或者让方法能够改变接受的数据。
+	rp := &r
+	fmt.Println("area: ", rp.area())
+	fmt.Println("perim:", rp.perim())
+} 
+```
+
+# 19.接口
+
+```go
+// 这里是一个几何体的基本接口。
+type geometry interface {
+	area() float64
+	perim() float64
+}
+
+// 让 rect2 和 circle 实现这个接口
+type rect2 struct {
+	width, height float64
+}
+type circle struct {
+	radius float64
+}
+
+// 在Go中实现一个接口，我们只需要实现接口中的所有方法。这里我们让 rect2 实现了 geometry 接口。
+func (r rect2) area() float64 {
+	return r.width * r.height
+}
+func (r rect2) perim() float64 {
+	return 2*r.width + 2*r.height
+}
+
+// circle 的实现。
+func (c circle) area() float64 {
+	return math.Pi * c.radius * c.radius
+}
+func (c circle) perim() float64 {
+	return 2 * math.Pi * c.radius
+}
+
+// 如果一个变量的是接口类型，那么我们可以调用这个被命名的接口中的方法。这里有一个一通用的 measure 函数，利用这个特性，它可以用在任何 geometry 上。
+func measure(g geometry) {
+	fmt.Println(g)
+	fmt.Println(g.area())
+	fmt.Println(g.perim())
+}
+func main() {
+	r := rect2{width: 3, height: 4}
+	c := circle{radius: 5}
+	// 结构体类型 circle 和 rect2 都实现了 geometry接口，所以我们可以使用它们的实例作为 measure 的参数。
+	measure(r)
+	measure(c)
+}
+```
+
+
+
