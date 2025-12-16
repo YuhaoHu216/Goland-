@@ -1,5 +1,7 @@
 [Go 语言教程 | 菜鸟教程](https://www.runoob.com/go/go-tutorial.html)
 
+[Go by Example 中文 (studygolang.com)](http://books.studygolang.com/gobyexample/)
+
 # 1.环境准备
 
 1.到[官网](https://go.dev/dl/)下载对应的系统版本
@@ -238,7 +240,7 @@ func main() {
 
 ```
 
-### 变量声明
+## 变量声明
 
 **第一种，指定变量类型，如果没有初始化，则变量默认为零值**。
 
@@ -296,7 +298,7 @@ var intVal int
 intVal = 1 
 ```
 
-### 多变量声明
+## 多变量声明
 
 ```go
 //类型相同多个变量, 非全局变量
@@ -448,7 +450,7 @@ const (
 
 ```
 
-;一个用法
+一个用法
 
 ```go
 package main
@@ -531,3 +533,51 @@ func main() {
 | 1      | \|\|             |
 
 可使用小括号来指定优先级
+
+# 8.For循环
+
+`for` 是 Go 中唯一的循环结构。这里有 `for` 循环的三个基本使用方式。
+
+```go
+func main(){
+	i := 1;
+	// 类似于其他语言的while 最常用的方式，带单个循环条件。
+	for i <= 10{
+		fmt.Println(i)
+		i = i + 1
+	}
+	// 经典的初始化/条件/后续形式 for 循环
+	for j := 10; j > 0; j--{
+		fmt.Println(j)
+	}
+	// 不带条件的 for 循环将一直执行，直到在循环体内使用了 break 或者 return 来跳出循环。
+	for {
+		fmt.Println("loop")
+		break;
+	}
+}
+```
+
+# 9.if/else分支
+
+可以不要 `else` 只用 `if` 语句,在条件语句之前可以有一个语句；任何在这里声明的变量都可以在所有的条件分支中使用。在 Go 中，你可以不使用圆括号，但是花括号是需要的。Go 里没有[三目运算符](http://en.wikipedia.org/wiki/%3F:)，所以即使你只需要基本的条件判断，你仍需要使用完整的 `if` 语句.
+
+```go
+func main() {
+	i := 8
+	if i%2 == 0 {
+		fmt.Println("i is even")
+	} else {
+		fmt.Println("i is odd")
+	}
+	// 条件语句之前可以有一个语句；任何在这里声明的变量都可以在所有的条件分支中使用
+	if num := 9; num < 0 {
+		fmt.Println("num is negative")
+	} else if num < 10 {
+		fmt.Println("num is less than 10")
+	} else {
+		fmt.Println("num is greater than 10")
+	}
+}
+```
+
