@@ -828,3 +828,72 @@ func main() {
 }
 ```
 
+# 16.指针
+
+```go
+// 通过两个函数：zeroval 和 zeroptr 来比较指针和值类型的不同。
+// zeroval 有一个 int 型参数，所以使用值传递。zeroval 将从调用它的那个函数中得到一个 ival形参的拷贝。
+func zeroval(ival int) {
+	ival = 0
+}
+
+// zeroptr 有和上面不同的 *int 参数，意味着它用了一个 int指针。
+// 函数体内的 *iptr 接着解引用 这个指针，从它内存地址得到这个地址对应的当前值。
+// 对一个解引用的指针赋值将会改变这个指针引用的真实地址的值。
+func zeroptr(iptr *int) {
+	*iptr = 0
+}
+func main() {
+	i := 1
+	fmt.Println("initial:", i)
+	zeroval(i)
+	fmt.Println("zeroval:", i)
+
+	// 通过 &i 语法来取得 i 的内存地址，例如一个变量i 的指针。
+	zeroptr(&i)
+	fmt.Println("zeroptr:", i)
+
+	// 指针也是可以被打印的。
+	fmt.Println("pointer:", &i)
+
+	// zeroval 在 main 函数中不能改变 i 的值，但是zeroptr 可以，因为它有一个这个变量的内存地址的引用。
+}
+
+```
+
+# 17.结构体
+
+```go
+// 这里的 person 结构体包含了 name 和 age 两个字段。
+type person struct {
+	name string
+	age  int
+}
+
+func main() {
+	// 使用这个语法创建了一个新的结构体元素。
+	fmt.Println(person{"Bob", 20})
+
+	// 你可以在初始化一个结构体元素时指定字段名字。
+	fmt.Println(person{name: "Alice", age: 30})
+
+	// 省略的字段将被初始化为零值。
+	fmt.Println(person{name: "Fred"})
+
+	// & 前缀生成一个结构体指针。
+	fmt.Println(&person{name: "Ann", age: 40})
+
+	// 使用点来访问结构体字段。
+	s := person{name: "Sean", age: 50}
+	fmt.Println(s.name)
+
+	// 也可以对结构体指针使用. - 指针会被自动解引用。
+	sp := &s
+	fmt.Println(sp.age)
+
+	// 结构体是可变的。
+	sp.age = 51
+	fmt.Println(sp.age)
+}
+```
+
