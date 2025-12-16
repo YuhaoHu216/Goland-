@@ -785,6 +785,14 @@ func intSeq() func() int {
 	}
 }
 
+// face 函数在到达 face(0) 前一直调用自身。
+func fact(n int) int {
+	if n == 0 {
+		return 1
+	}
+	return n * fact(n-1)
+}
+
 func main() {
 	// 通过funcName(args) 来调用一个函数，
 	res := plus(1, 2)
@@ -814,6 +822,9 @@ func main() {
 	// 为了确认这个状态对于这个特定的函数是唯一的，我们重新创建并测试一下。
 	newInts := intSeq()
 	fmt.Println(newInts())
+
+	// 看看递归函数的结果
+	fmt.Println(fact(7))
 }
 ```
 
