@@ -612,3 +612,143 @@ func main() {
 }
 ```
 
+# 11.数组
+
+```go
+func main() {
+	var a [5]int
+	// 不初始化,默认零值,int的零值就是0
+	fmt.Println("emp:", a)
+	// 可将数组中的值拿出来单独操作
+	a[4] = 100
+	fmt.Println("set:", a)
+	fmt.Println("get:", a[4])
+	// 使用内置len函数获取数组的长度
+	fmt.Println("len:", len(a))
+	// 创建时可初始化
+	b := [5]int{1, 2, 3, 4, 5}
+	fmt.Println("dcl:", b)
+	// 多维数组
+	var twoD [2][3]int
+	for i := 0; i < 2; i++ {
+		for j := 0; j < 3; j++ {
+			twoD[i][j] = i + j
+
+		}
+	}
+	fmt.Println("2d: ", twoD)
+}
+```
+
+# 12.slice
+
+```go
+func main() {
+	// 使用内建的方法 make。这里我们创建了一个长度为3的 string 类型 slice（初始化为零值）
+	s := make([]string, 3)
+	fmt.Println("emp:", s)
+
+	s[0] = "a"
+	s[1] = "b"
+	s[2] = "c"
+	// 操纵和数组类似
+	fmt.Println("set:", s)
+	fmt.Println("get:", s[2])
+	fmt.Println("len:", len(s))
+	// slice可复制,但是必须相同长度
+	c := make([]string, len(s))
+	copy(c, s)
+	fmt.Println("cpy:", c)
+
+	// 这里包含s[2],s[3],s[4]三个元素
+	l := s[2:5]
+	fmt.Println("sl1:", l)
+	// 从s[0]包含到s[5]
+	l = s[:5]
+	fmt.Println("sl2:", l)
+	// 从s[2]到最后一个值
+	l = s[2:]
+	fmt.Println("sl3:", l)
+	// 初始化时赋值
+	t := []string{"g", "h", "i"}
+	fmt.Println("dcl:", t)
+	// 和组成多维数组结构,内部slice长度可以不同,和多维数组不同
+	twoD := make([][]int, 3)
+	for i := 0; i < 3; i++ {
+		innerLen := i + 1
+		twoD[i] = make([]int, innerLen)
+		for j := 0; j < innerLen; j++ {
+			twoD[i][j] = i + j
+		}
+	}
+	fmt.Println("2d:", twoD)
+}
+```
+
+# 13.关联数组(map)
+
+```go
+func main() {
+	//  map，需要使用内建函数 make(map[key-type]val-type).
+	m := make(map[string]int)
+	// 使用典型的 make[key] = val 语法来设置键值对。
+
+	m["k1"] = 7
+	m["k2"] = 13
+	// 使用例如 Println 来打印一个 map 将会输出所有的键值对。
+	fmt.Println("map:", m)
+
+	// 使用 name[key] 来获取一个键的值
+	v1 := m["k1"]
+	fmt.Println("v1: ", v1)
+
+	// 当对一个 map 调用内建的 len 时，返回的是键值对数目
+	fmt.Println("len:", len(m))
+
+	// 内建的 delete 可以从一个 map 中移除键值对
+	delete(m, "k2")
+	fmt.Println("map:", m)
+
+	// 当从一个 map 中取值时，可选的第二返回值指示这个键是在这个 map 中。这可以用来消除键不存在和键有零值，像 0 或者 "" 而产生的歧义。
+	_, prs := m["k2"]
+	fmt.Println("prs:", prs)
+
+	// 你也可以通过这个语法在同一行申明和初始化一个新的map。
+	n := map[string]int{"foo": 1, "bar": 2}
+	fmt.Println("map:", n)
+
+}
+```
+
+# 14.range便利(增强for)
+
+```go
+func main() {
+	// 这里我们使用 range 来统计一个 slice 的元素个数。数组也可以采用这种方法。
+	nums := []int{2, 3, 4}
+	sum := 0
+	for _, num := range nums {
+		sum += num
+	}
+	fmt.Println("sum:", sum)
+
+	// range 在数组和 slice 中都同样提供每个项的索引和值。上面我们不需要索引，所以我们使用 空值定义符_ 来忽略它。有时候我们实际上是需要这个索引的。
+	for i, num := range nums {
+		if num == 3 {
+			fmt.Println("index:", i)
+		}
+	}
+
+	// range 在 map 中迭代键值对。
+	kvs := map[string]string{"a": "apple", "b": "banana"}
+	for k, v := range kvs {
+		fmt.Printf("%s -> %s\n", k, v)
+	}
+
+	// range 在字符串中迭代 unicode 编码。第一个返回值是rune 的起始字节位置，然后第二个是 rune 自己。
+	for i, c := range "go" {
+		fmt.Println(i, c)
+	}
+}
+```
+
