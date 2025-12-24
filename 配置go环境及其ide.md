@@ -1102,3 +1102,28 @@ func main() {
 }
 ```
 
+## 通道同步
+
+```go
+// done 通道将被用于通知其他 Go 协程这个函数已经工作完毕。
+func worker(done chan bool) {
+	fmt.Print("working...")
+	time.Sleep(time.Second)
+	fmt.Println("done")
+	// 发送一个值来通知我们已经完工啦。
+	done <- true
+}
+func main() {
+	// 运行一个 worker Go协程，并给予用于通知的通道。
+	done := make(chan bool, 1)
+	go worker(done)
+	// 程序将在接收到通道中 worker 发出的通知前一直阻塞。
+	<-done
+	/**
+	把 <- done 这行代码从程序中移除，程序甚至会在 worker还没开始运行时就结束了。
+	main 函数所在的 goroutine 一结束，整个程序就立刻退出，所有其他 goroutine 都会被强制终止，不管它们有没有开始执行。
+	<-done 的作用，就是阻塞 main goroutine，防止程序提前退出。
+	*/
+}
+```
+
