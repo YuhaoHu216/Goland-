@@ -1354,3 +1354,24 @@ func main() {
 }
 ```
 
+## 24.打点器
+
+```go
+func main() {
+
+	// 打点器和定时器的机制有点相似：用通道来发送数据。这里我们在这个通道上使用内置的 range 来迭代值每隔500ms 发送一次的值。
+	ticker := time.NewTicker(time.Millisecond * 500)
+	go func() {
+		for t := range ticker.C {
+			fmt.Println("Tick at", t)
+		}
+	}()
+
+	// 打点器可以和定时器一样被停止。一旦一个打点停止了，将不能再从它的通道中接收到值。我们将它在运行 1600ms 后停止这个打点器。
+	time.Sleep(time.Millisecond * 10000)
+	ticker.Stop()
+	fmt.Println("Ticker stopped")
+}
+
+```
+
