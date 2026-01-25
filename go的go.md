@@ -14,7 +14,24 @@ go version
 
 来查看是否安装完毕
 
+关于换源(初始源GOPROXY=https://proxy.golang.org,direct)
+```shell
+go env 查看当前的配置 # 注意GOPROXY的值 
+go env -w GOPROXY=https://goproxy.cn,direct # 永久换源   
+```
+推荐代理源 
+- https://goproxy.cn（七牛云）
+- https://goproxy.io（全球代理）
+- https://mirrors.aliyun.com/goproxy/（阿里云）
+
 2.下载IDE [goland](https://www.jetbrains.com/go/download/?section=windows)可以选择其他版本,建议zip版
+
+记得在 Settings → Go → Go Modules
+✅ Enable Go Modules integration
+
+✅ 勾选 “Download dependencies automatically”
+
+Proxy：保持默认即可
 
 # 2.Go语言结构
 
